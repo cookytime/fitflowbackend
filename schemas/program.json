@@ -1,0 +1,118 @@
+{
+  "name": "Program",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Program name"
+    },
+    "client_id": {
+      "type": "string",
+      "description": "Associated client ID"
+    },
+    "description": {
+      "type": "string",
+      "description": "Program description and goals"
+    },
+    "weekly_schedule": {
+      "type": "object",
+      "description": "Weekly workout schedule organized by days",
+      "properties": {
+        "monday": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "exercise_id": {
+                "type": "string"
+              },
+              "exercise_name": {
+                "type": "string"
+              },
+              "sets": {
+                "type": "number"
+              },
+              "target_reps": {
+                "type": "string"
+              },
+              "weight": {
+                "type": "number"
+              },
+              "rest_seconds": {
+                "type": "number"
+              },
+              "notes": {
+                "type": "string"
+              },
+              "superset_group": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "tuesday": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "exercise_id": {
+                "type": "string"
+              },
+              "exercise_name": {
+                "type": "string"
+              },
+              "sets": {
+                "type": "number"
+              },
+              "target_reps": {
+                "type": "string"
+              },
+              "weight": {
+                "type": "number"
+              },
+              "rest_seconds": {
+                "type": "number"
+              },
+              "notes": {
+                "type": "string"
+              },
+              "superset_group": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "wednesday": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "exercise_id": {
+                "type": "string"
+              },
+              "exercise_name": {
+                "type": "string"
+              },
+              "sets": {
+                "type": "number"
+              },
+              "target_reps": {
+                "type": "string"
+              },
+              "weight": {
+                "type": "number"
+              },
+              "rest_seconds": {
+                "type": "number"
+              },
+              "notes": {
+                "type": "string"
+              },
+              "superset_group": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "thursday": {
+ 

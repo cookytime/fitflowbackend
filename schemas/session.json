@@ -1,0 +1,118 @@
+{
+  "name": "Session",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string",
+      "description": "Client ID"
+    },
+    "client_name": {
+      "type": "string",
+      "description": "Client name for display"
+    },
+    "trainer_email": {
+      "type": "string",
+      "description": "Trainer email, stored when session is scheduled for 'Myself'"
+    },
+    "program_id": {
+      "type": "string",
+      "description": "Program ID"
+    },
+    "program_name": {
+      "type": "string",
+      "description": "Program name for display"
+    },
+    "scheduled_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the session is scheduled"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "in_progress",
+        "completed",
+        "cancelled"
+      ],
+      "default": "scheduled"
+    },
+    "duration_minutes": {
+      "type": "number",
+      "description": "Actual session duration"
+    },
+    "session_notes": {
+      "type": "string",
+      "description": "Overall notes about the session"
+    },
+    "exercise_logs": {
+      "type": "array",
+      "description": "Logged data for each exercise",
+      "items": {
+        "type": "object",
+        "properties": {
+          "exercise_id": {
+            "type": "string"
+          },
+          "exercise_name": {
+            "type": "string"
+          },
+          "sets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "weight": {
+                  "type": "number"
+                },
+                "reps": {
+                  "type": "number"
+                },
+                "completed": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "notes": {
+            "type": "string"
+          },
+          "client_feedback": {
+            "type": "string",
+            "enum": [
+              "easy",
+              "moderate",
+              "hard",
+              "failed"
+            ]
+          }
+        }
+      }
+    },
+    "cardio_logs": {
+      "type": "array",
+      "description": "Logged cardio work",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "duration_minutes": {
+            "type": "number"
+          },
+          "distance": {
+            "type": "number"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "client_id",
+    "scheduled_date"
+  ]
+}

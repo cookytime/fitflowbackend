@@ -1,0 +1,102 @@
+{
+  "name": "Exercise",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Exercise name"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "chest",
+        "back",
+        "shoulders",
+        "arms",
+        "legs",
+        "core",
+        "cardio",
+        "full_body",
+        "mobility"
+      ],
+      "description": "Muscle group or category"
+    },
+    "equipment": {
+      "type": "string",
+      "enum": [
+        "barbell",
+        "dumbbell",
+        "cable",
+        "machine",
+        "bodyweight",
+        "kettlebell",
+        "resistance_band",
+        "other"
+      ],
+      "description": "Primary equipment needed"
+    },
+    "default_weight": {
+      "type": "number",
+      "description": "Suggested starting weight in lbs"
+    },
+    "description": {
+      "type": "string",
+      "description": "How to perform the exercise"
+    },
+    "video_url": {
+      "type": "string",
+      "description": "Optional demo video URL"
+    },
+    "force": {
+      "type": "string",
+      "enum": [
+        "pull",
+        "push",
+        "static"
+      ],
+      "description": "Type of force applied"
+    },
+    "level": {
+      "type": "string",
+      "enum": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "description": "Difficulty level"
+    },
+    "mechanic": {
+      "type": "string",
+      "enum": [
+        "isolation",
+        "compound"
+      ],
+      "description": "Movement type"
+    },
+    "primaryMuscles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Primary muscles targeted"
+    },
+    "secondaryMuscles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Secondary muscles targeted"
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Image URLs for exercise demonstration"
+    }
+  },
+  "required": [
+    "name",
+    "category"
+  ]
+}

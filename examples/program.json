@@ -1,0 +1,229 @@
+[
+  {
+    "name": "Weight Loss and Toning Program",
+    "description": "This program is designed for Glen Cook to achieve weight loss and improve muscle toning. It focuses on a mixture of strength training and cardio to enhance metabolism and promote fat loss while toning muscles. Each workout includes compound movements for maximum efficiency and a variety of exercises to keep the training engaging.",
+    "weekly_schedule": {
+      "sunday": [],
+      "saturday": [],
+      "tuesday": [
+        {
+          "notes": "Start slow and increase speed throughout.",
+          "sets": 1.0,
+          "exercise_id": "69747a91a9632a81469e1747",
+          "rest_seconds": 90.0,
+          "superset_group": null,
+          "weight": 0.0,
+          "target_reps": "20 minutes",
+          "exercise_name": "Running, Treadmill"
+        },
+        {
+          "notes": "Keep back straight, drive elbows up.",
+          "sets": 3.0,
+          "exercise_id": "",
+          "rest_seconds": 60.0,
+          "superset_group": null,
+          "weight": 40.0,
+          "target_reps": "8-12",
+          "exercise_name": "Two-Arm Dumbbell Row"
+        },
+        {
+          "notes": "Keep elbows tucked to your sides.",
+          "sets": 3.0,
+          "exercise_id": "69747a91a9632a81469e181b",
+          "rest_seconds": 60.0,
+          "superset_group": null,
+          "weight": 30.0,
+          "target_reps": "10-12",
+          "exercise_name": "Triceps Pushdown"
+        },
+        {
+          "notes": "Maintain a straight line from head to heels.",
+          "sets": 3.0,
+          "exercise_id": "69747a91a9632a81469e1809",
+          "rest_seconds": 60.0,
+          "superset_group": null,
+          "weight": 0.0,
+          "target_reps": "8-10",
+          "exercise_name": "Suspended Push-Up"
+        },
+        {
+          "notes": "",
+          "sets": 3.0,
+          "exercise_id": "697f73719eb12f248c54b0f9",
+          "rest_seconds": 90.0,
+          "superset_group": null,
+          "weight": 10.0,
+          "target_reps": "8-12",
+          "exercise_name": "Alternate Hammer Curl"
+        }
+      ],
+      "wednesday": [
+        {
+          "notes": "Keep elbows in and back straight.",
+          "sets": 3.0,
+          "exercise_id": "69747a91a9632a81469e1849",
+          "rest_seconds": 60.0,
+          "superset_group": null,
+          "weight": 40.0,
+          "target_reps": "8-10",
+          "exercise_name": "Zercher Squats"
+        },
+        {
+          "notes": "Stand tall and keep core engaged.",
+          "sets": 3.0,
+          "exercise_id": "69747a91a9632a81469e1823",
+          "rest_seconds": 60.0,
+          "superset_group": null,
+          "weight": 25.0,
+          "target_reps": "8-12",
+          "exercise_name": "Two-Arm Kettlebell Military Press"
+        },
+        {
+          "notes": "Slowly control the movement and squeeze at the top.",
+          "sets": 3.0,
+          "exercise_id": "69747a91a9632a81469e1833",
+          "rest_seconds": 60.0,
+          "superset_group": null,
+          "weight": 15.0,
+          "target_reps": "12-15",
+          "exercise_name": "Weighted Crunches"
+        },
+        {
+          "notes": "Walk at a steady, challenging pace.",
+          "sets": 1.0,
+          "exercise_id": "69747a91a9632a81469e17c6",
+          "rest_seconds": 90.0,
+          "superset_group": null,
+          "weight": 0.0,
+          "target_reps": "30 minutes",
+          "exercise_name": "Stairmaster"
+        }
+      ],
+      "thursday": [
+        {
+          "notes": "Sprint at maximum effort for short bursts.",
+          "sets": 5.0,
+          "exercise_id": "69747a91a9632a81469e1842",
+          "rest_seconds": 90.0,
+          "superset_group": null,
+          "weight": 0.0,
+          "target_reps": "30 seconds",
+          "exercise_name": "Wind Sprints"
+        },
+        {
+          "notes": "Control the weight throughout the movement.",
+          "sets": 3.0,
+          "exercise_id": "69747a91a9632a81469e181a",
+          "rest_seconds": 60.0,
+          "superset_group": null,
+          "weight": 25.0,
+          "target_reps": "10-12",
+          "exercise_name": "Triceps Overhead Extension with Rope"
+        },
+        {
+          "notes": "Keep your back straight and pull down at shoulder width.",
+          "sets": 3.0,
+          "exercise_id": "69747a91a9632a81469e183c",
+          "rest_seconds": 60.0,
+          "superset_group": null,
+          "weight": 50.0,
+          "target_reps": "8-12",
+          "exercise_name": "Wide-Grip Lat Pulldown"
+        }
+      ],
+      "friday": [
+        {
+          "notes": "Focus on squeezing your shoulder blades together.",
+          "sets": 3.0,
+          "exercise_id": "69747a91a9632a81469e180e",
+          "rest_seconds": 60.0,
+          "superset_group": null,
+          "weight": 50.0,
+          "target_reps": "8-10",
+          "exercise_name": "T-Bar Row with Handle"
+        },
+        {
+          "notes": "Land softly and keep your knees behind your toes.",
+          "sets": 3.0,
+          "exercise_id": "69747a91a9632a81469e1834",
+          "rest_seconds": 60.0,
+          "superset_group": null,
+          "weight": 20.0,
+          "target_reps": "10-12",
+          "exercise_name": "Weighted Jump Squat"
+        },
+        {
+          "notes": "Pull with your back, not just your arms.",
+          "sets": 3.0,
+          "exercise_id": "69747a91a9632a81469e1824",
+          "rest_seconds": 60.0,
+          "superset_group": null,
+          "weight": 30.0,
+          "target_reps": "10-12",
+          "exercise_name": "Two-Arm Kettlebell Row"
+        },
+        {
+          "notes": "Maintain a steady tempo and focus on endurance.",
+          "sets": 1.0,
+          "exercise_id": "69747a91a9632a81469e153b",
+          "rest_seconds": 90.0,
+          "superset_group": null,
+          "weight": 0.0,
+          "target_reps": "30 minutes",
+          "exercise_name": "Bicycling, Stationary"
+        }
+      ],
+      "monday": [
+        {
+          "notes": "Keep your feet flat and back pressed against the bench.",
+          "sets": 3.0,
+          "exercise_id": "69747a91a9632a81469e1839",
+          "rest_seconds": 60.0,
+          "superset_group": null,
+          "weight": 60.0,
+          "target_reps": "8-10",
+          "exercise_name": "Wide-Grip Barbell Bench Press"
+        },
+        {
+          "notes": "Keep your back straight and head up.",
+          "sets": 3.0,
+          "exercise_id": "69747a91a9632a81469e1838",
+          "rest_seconds": 60.0,
+          "superset_group": null,
+          "weight": 50.0,
+          "target_reps": "10-12",
+          "exercise_name": "Weighted Squat"
+        },
+        {
+          "notes": "Engage your core throughout the movement.",
+          "sets": 3.0,
+          "exercise_id": "69747a91a9632a81469e1837",
+          "rest_seconds": 60.0,
+          "superset_group": null,
+          "weight": 10.0,
+          "target_reps": "10-15",
+          "exercise_name": "Weighted Sit-Ups - With Bands"
+        },
+        {
+          "notes": "Maintain a brisk pace, aim for 5% incline.",
+          "sets": 1.0,
+          "exercise_id": "69747a91a9632a81469e182f",
+          "rest_seconds": 90.0,
+          "superset_group": null,
+          "weight": 0.0,
+          "target_reps": "30 minutes",
+          "exercise_name": "Walking, Treadmill"
+        }
+      ]
+    },
+    "duration_weeks": 8.0,
+    "client_id": "6997433e34839c57cdc3c18b",
+    "status": "active",
+    "id": "697ee8d75f15338ba31e845b",
+    "created_date": "2026-02-01T05:47:03.499000",
+    "updated_date": "2026-02-20T12:51:39.279000",
+    "created_by_id": "69745dfb4731cdf54284c986",
+    "created_by": "glen@glencook.net",
+    "is_sample": false
+  }
+]
