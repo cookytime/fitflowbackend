@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Compilation Artifacts
+dist/
+build/
+*.js
+*.d.ts
+*.map
+
+# Editor/OS Files
+.DS_Store
+.vscode/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment Variables
+.env
+.env.local
