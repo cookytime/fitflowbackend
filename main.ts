@@ -1019,10 +1019,19 @@ function buildOpenApiApp() {
     return c.json({ ok: true as const, sync_results: results }, 200);
   });
 
-  app.get("/auth/callback", (c) => {
-    const token = c.req.query("token") ?? "";
-    const deepLink = `${MAGIC_LINK_SCHEME}://auth?token=${encodeURIComponent(token)}`;
+  const daysQuerySchema = z.object({ days: z.string().optional() });
+  const syncItemsBodySchema = z.object({ items: z.array(z.any()) });
 
+  const authCallbackRoute = createRoute({
+    method: "get",
+    path: "/auth/callback",
+    request: { query: z.object({ token: z.string().optional() }) },
+    responses: { 200: { description: "Auth callback page", content: { "text/html": { schema: z.string() } } } },
+  });
+
+  app.openapi(authCallbackRoute, (c) => {
+    const token = c.req.valid("query").token ?? "";
+    const deepLink = `${MAGIC_LINK_SCHEME}://auth?token=${encodeURIComponent(token)}`;
     const html = `<!doctype html>
 <html>
   <head>
@@ -1041,84 +1050,150 @@ function buildOpenApiApp() {
     <p style="color:#666;margin-top:24px;">If you’re on a device without the app installed, install it and request a new link.</p>
   </body>
 </html>`;
-
     return c.html(html, 200);
   });
 
-  app.post("/dev/token", async (c) => {
+  const devTokenRoute = createRoute({
+    method: "post",
+    path: "/dev/token",
+    request: {
+      body: {
+        required: true,
+        content: { "application/json": { schema: z.object({ email: z.string().email() }) } },
+      },
+    },
+    responses: {
+      200: { description: "Dev JWT response", content: { "application/json": { schema: VerifyAuthResponseSchema } } },
+      400: { description: "Bad request", content: { "application/json": { schema: ErrorSchema } } },
+      401: { description: "Unauthorized", content: { "application/json": { schema: ErrorSchema } } },
+      404: { description: "Disabled", content: { "application/json": { schema: ErrorSchema } } },
+    },
+  });
+
+  app.openapi(devTokenRoute, async (c) => {
     const devSecret = Deno.env.get("DEV_TOKEN_SECRET");
     if (!devSecret) return c.json({ error: "Not found" }, 404);
-
     const headerSecret = c.req.header("x-dev-token-secret") ?? "";
     if (headerSecret !== devSecret) return c.json({ error: "Invalid dev secret" }, 401);
-
-    const body = await c.req.json().catch(() => ({}));
-    const email = normalizeEmail(String((body as any).email ?? ""));
+    const body = c.req.valid("json");
+    const email = normalizeEmail(body.email);
     if (!email || !isValidEmail(email)) return c.json({ error: "Valid email is required" }, 400);
-
     await getClientForUserEmail(email);
     const user = await getOrCreateUserByEmail(email);
     const access_token = await mintJwt(user);
-    return c.json({
-      access_token,
-      user: { user_id: user.userId, email: user.email },
-    }, 200);
+    return c.json({ access_token, user: { user_id: user.userId, email: user.email } }, 200);
   });
 
-  app.get("/dashboard", async (c) => {
+  const dashboardRoute = createRoute({
+    method: "get",
+    path: "/dashboard",
+    request: { query: daysQuerySchema },
+    responses: { 200: { description: "Dashboard payload", content: { "application/json": { schema: z.any() } } } },
+  });
+
+  app.openapi(dashboardRoute, async (c) => {
     const { email } = await verifyJwt(c.req.header("authorization") ?? null);
     const client = await getClientForUserEmail(email);
-    const days = Math.min(Math.max(parseInt(c.req.query("days") ?? "14", 10) || 14, 1), 60);
+    const days = Math.min(Math.max(parseInt(c.req.valid("query").days ?? "14", 10) || 14, 1), 60);
     return c.json(await buildDashboard(client, email, days), 200);
   });
 
-  app.get("/daily-checkin/recent", async (c) => {
+  const dailyRecentRoute = createRoute({
+    method: "get",
+    path: "/daily-checkin/recent",
+    request: { query: daysQuerySchema },
+    responses: { 200: { description: "Recent daily check-ins", content: { "application/json": { schema: z.any() } } } },
+  });
+
+  app.openapi(dailyRecentRoute, async (c) => {
     const { email } = await verifyJwt(c.req.header("authorization") ?? null);
     const client = await getClientForUserEmail(email);
-    const days = Math.min(Math.max(parseInt(c.req.query("days") ?? "14", 10) || 14, 1), 60);
+    const days = Math.min(Math.max(parseInt(c.req.valid("query").days ?? "14", 10) || 14, 1), 60);
     const rows = await base44List(BASE44_DAILY_ENTITY, { client_id: client.id });
     const items = lastNDaysByDateField(rows, "log_date", days);
     return c.json({ ok: true, days, client_id: client.id, items }, 200);
   });
 
-  app.get("/progress-log/recent", async (c) => {
+  const progressRecentRoute = createRoute({
+    method: "get",
+    path: "/progress-log/recent",
+    request: { query: daysQuerySchema },
+    responses: { 200: { description: "Recent progress logs", content: { "application/json": { schema: z.any() } } } },
+  });
+
+  app.openapi(progressRecentRoute, async (c) => {
     const { email } = await verifyJwt(c.req.header("authorization") ?? null);
     const client = await getClientForUserEmail(email);
-    const days = Math.min(Math.max(parseInt(c.req.query("days") ?? "14", 10) || 14, 1), 60);
+    const days = Math.min(Math.max(parseInt(c.req.valid("query").days ?? "14", 10) || 14, 1), 60);
     const rows = await base44List(BASE44_PROGRESS_ENTITY, { client_id: client.id });
     const items = lastNDaysByDateField(rows, "log_date", days);
     return c.json({ ok: true, days, client_id: client.id, items }, 200);
   });
 
-  app.get("/session/recent", async (c) => {
+  const sessionRecentRoute = createRoute({
+    method: "get",
+    path: "/session/recent",
+    request: { query: daysQuerySchema },
+    responses: { 200: { description: "Recent sessions", content: { "application/json": { schema: z.any() } } } },
+  });
+
+  app.openapi(sessionRecentRoute, async (c) => {
     const { email } = await verifyJwt(c.req.header("authorization") ?? null);
     const client = await getClientForUserEmail(email);
-    const days = Math.min(Math.max(parseInt(c.req.query("days") ?? "14", 10) || 14, 1), 60);
+    const days = Math.min(Math.max(parseInt(c.req.valid("query").days ?? "14", 10) || 14, 1), 60);
     const rows = await base44List(BASE44_SESSION_ENTITY, { client_id: client.id });
     const items = lastNDaysByDateTimeField(rows, "scheduled_date", days);
     return c.json({ ok: true, days, client_id: client.id, items }, 200);
   });
 
-  app.get("/sessions", async (c) => {
+  const sessionsGetRoute = createRoute({
+    method: "get",
+    path: "/sessions",
+    request: { query: daysQuerySchema },
+    responses: { 200: { description: "Upcoming sessions", content: { "application/json": { schema: z.any() } } } },
+  });
+
+  app.openapi(sessionsGetRoute, async (c) => {
     const { email } = await verifyJwt(c.req.header("authorization") ?? null);
     const client = await getClientForUserEmail(email);
-    const days = Math.min(Math.max(parseInt(c.req.query("days") ?? "7", 10) || 7, 1), 60);
+    const days = Math.min(Math.max(parseInt(c.req.valid("query").days ?? "7", 10) || 7, 1), 60);
     const rows = await base44List(BASE44_SESSION_ENTITY, { client_id: client.id });
     const items = nextNDaysByDateTimeField(rows, "scheduled_date", days);
     return c.json({ ok: true, days, client_id: client.id, items }, 200);
   });
 
-  app.post("/sessions", async (c) => {
+  const sessionsPostRoute = createRoute({
+    method: "post",
+    path: "/sessions",
+    request: {
+      body: {
+        required: true,
+        content: { "application/json": { schema: z.object({ days: z.number().optional() }) } },
+      },
+    },
+    responses: { 200: { description: "Upcoming sessions", content: { "application/json": { schema: z.any() } } } },
+  });
+
+  app.openapi(sessionsPostRoute, async (c) => {
     const { email } = await verifyJwt(c.req.header("authorization") ?? null);
     const client = await getClientForUserEmail(email);
-    const body = await c.req.json().catch(() => ({}));
-    const days = Math.min(Math.max(parseInt(String((body as any).days ?? "7"), 10) || 7, 1), 60);
+    const body = c.req.valid("json");
+    const days = Math.min(Math.max(body.days ?? 7, 1), 60);
     const rows = await base44List(BASE44_SESSION_ENTITY, { client_id: client.id });
     const items = nextNDaysByDateTimeField(rows, "scheduled_date", days);
     return c.json({ ok: true, days, client_id: client.id, items }, 200);
   });
 
-  app.post("/daily-checkin", async (c) => {
+  const dailyPostRoute = createRoute({
+    method: "post",
+    path: "/daily-checkin",
+    request: {
+      body: { required: true, content: { "application/json": { schema: z.any() } } },
+    },
+    responses: { 200: { description: "Updated dashboard", content: { "application/json": { schema: z.any() } } } },
+  });
+
+  app.openapi(dailyPostRoute, async (c) => {
     const { email } = await verifyJwt(c.req.header("authorization") ?? null);
     const client = await getClientForUserEmail(email);
     const payload = (await c.req.json().catch(() => ({}))) as DailyCheckInInput;
@@ -1126,10 +1201,19 @@ function buildOpenApiApp() {
     return c.json(await buildDashboard(client, email, 14), 200);
   });
 
-  app.post("/daily-checkin/sync", async (c) => {
+  const dailySyncRoute = createRoute({
+    method: "post",
+    path: "/daily-checkin/sync",
+    request: {
+      body: { required: true, content: { "application/json": { schema: syncItemsBodySchema } } },
+    },
+    responses: { 200: { description: "Sync + dashboard", content: { "application/json": { schema: z.any() } } } },
+  });
+
+  app.openapi(dailySyncRoute, async (c) => {
     const { email } = await verifyJwt(c.req.header("authorization") ?? null);
     const client = await getClientForUserEmail(email);
-    const body = await c.req.json().catch(() => ({}));
+    const body = c.req.valid("json");
     const items = Array.isArray((body as any).items) ? (body as any).items : [];
     const results: any[] = [];
     for (const item of items) {
@@ -1140,7 +1224,16 @@ function buildOpenApiApp() {
     return c.json({ ...dash, sync_results: results }, 200);
   });
 
-  app.post("/progress-log", async (c) => {
+  const progressPostRoute = createRoute({
+    method: "post",
+    path: "/progress-log",
+    request: {
+      body: { required: true, content: { "application/json": { schema: z.any() } } },
+    },
+    responses: { 200: { description: "Updated dashboard", content: { "application/json": { schema: z.any() } } } },
+  });
+
+  app.openapi(progressPostRoute, async (c) => {
     const { email } = await verifyJwt(c.req.header("authorization") ?? null);
     const client = await getClientForUserEmail(email);
     const payload = (await c.req.json().catch(() => ({}))) as ProgressLogInput;
@@ -1148,10 +1241,19 @@ function buildOpenApiApp() {
     return c.json(await buildDashboard(client, email, 14), 200);
   });
 
-  app.post("/progress-log/sync", async (c) => {
+  const progressSyncRoute = createRoute({
+    method: "post",
+    path: "/progress-log/sync",
+    request: {
+      body: { required: true, content: { "application/json": { schema: syncItemsBodySchema } } },
+    },
+    responses: { 200: { description: "Sync + dashboard", content: { "application/json": { schema: z.any() } } } },
+  });
+
+  app.openapi(progressSyncRoute, async (c) => {
     const { email } = await verifyJwt(c.req.header("authorization") ?? null);
     const client = await getClientForUserEmail(email);
-    const body = await c.req.json().catch(() => ({}));
+    const body = c.req.valid("json");
     const items = Array.isArray((body as any).items) ? (body as any).items : [];
     const results: any[] = [];
     for (const item of items) {
@@ -1162,15 +1264,30 @@ function buildOpenApiApp() {
     return c.json({ ...dash, sync_results: results }, 200);
   });
 
-  app.post("/session", async (c) => {
+  const sessionPostRoute = createRoute({
+    method: "post",
+    path: "/session",
+    request: {
+      body: { required: true, content: { "application/json": { schema: SessionSyncItemSchema } } },
+    },
+    responses: { 200: { description: "Upserted session", content: { "application/json": { schema: z.any() } } } },
+  });
+
+  app.openapi(sessionPostRoute, async (c) => {
     const { email } = await verifyJwt(c.req.header("authorization") ?? null);
     const client = await getClientForUserEmail(email);
-    const payload = (await c.req.json().catch(() => ({}))) as SessionInput;
+    const payload = c.req.valid("json") as SessionInput;
     const result = await upsertSession(client, payload);
     return c.json({ ok: true, result }, 200);
   });
 
-  app.get("/me", async (c) => {
+  const meRoute = createRoute({
+    method: "get",
+    path: "/me",
+    responses: { 200: { description: "Current user", content: { "application/json": { schema: z.any() } } } },
+  });
+
+  app.openapi(meRoute, async (c) => {
     const { email } = await verifyJwt(c.req.header("authorization") ?? null);
     const client = await getClientForUserEmail(email);
     return c.json({

@@ -107,7 +107,6 @@ Protected:
 OpenAPI notes:
 - `/openapi.json` is generated from code-first route definitions.
 - `/docs` serves Swagger UI backed by that generated spec.
-- Current documented routes: `/health`, `/auth/start`, `/auth/verify`, `/session/sync`. Other legacy routes are still available and can be migrated next.
 
 ## Example Requests
 
